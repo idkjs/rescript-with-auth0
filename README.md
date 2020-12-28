@@ -35,3 +35,36 @@ Both the `auth0ClientId` and `auth0Domain` needs to match your Auth0 app setting
 
 - [Expo AuthSession docs](https://docs.expo.io/versions/latest/sdk/auth-session/)
 - [Auth0 React/SPA quickstart guide](https://auth0.com/docs/quickstart/spa/react)
+
+
+## AuthO
+
+You are downloading a working sample configured for  the application RescriptWithAuth0
+
+To run the sample follow these steps:
+
+1. Set the Allowed Callback URLs in the Application Settings so it works for both Android and iOS apps:
+
+```bash
+com.auth0samples://klik.eu.auth0.com/ios/com.auth0samples/callback,com.auth0samples://klik.eu.auth0.com/android/com.auth0samples/callback
+# for expo its:
+https://auth.expo.io/@idkjs/rescript-with-auth0
+```
+
+2. Set the Allowed Logout URLs in the Application Settings so it works for both Android and iOS apps:
+
+```bash
+com.auth0samples://klik.eu.auth0.com/ios/com.auth0samples/callback,com.auth0samples://klik.eu.auth0.com/android/com.auth0samples/callback
+```
+
+3. Make sure Node.JS LTS, Yarn and CocoaPods are installed.
+
+4. Execute the following commands in the sample's directory:
+
+```bash
+yarn install # Install dependencies
+cd ios && pod install # Install the iOS module Pod
+yarn run ios # Run on iOS device
+yarn run android # Run on Android device
+
+```

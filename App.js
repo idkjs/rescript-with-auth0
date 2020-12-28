@@ -10,10 +10,12 @@ import { Alert, Button, Platform, StyleSheet, Text, View } from 'react-native';
 // signed in as the 'arielweinberger' account on Expo and the name/slug for this app is 'with-auth0'.
 //
 // You can open this app in the Expo client and check your logs to find out your redirect URL.
-
-const auth0ClientId = "";
-const authorizationEndpoint = "https://arielweinberger.eu.auth0.com/authorize";
-
+const domain_klik = "klik.eu.auth0.com"
+const auth0ClientId = "GDuiq4x1reJXs8a6yDXgqJcNAc8QBOjX";
+const clientSecret = "iuRb6UaLiohS0U4ZYi_iz9DDBh0isBPyxvVHin4mjmbgLj3wSBT6Y6kYbn4La2Wf";
+// const authorizationEndpoint = "https://arielweinberger.eu.auth0.com/authorize";
+// const authorizationEndpoint = "https://dev-mandalarian.eu.auth0.com/authorize";
+const authorizationEndpoint = "https://klik.eu.auth0.com/authorize";
 const useProxy = Platform.select({ web: false, default: true });
 const redirectUri = AuthSession.makeRedirectUri({ useProxy });
 
@@ -41,6 +43,8 @@ export default function App() {
   console.log(`Redirect URL: ${redirectUri}`);
 
   React.useEffect(() => {
+      console.log("state_name: " + name)
+      console.log("result: " + result)
     if (result) {
       if (result.error) {
         Alert.alert(
@@ -52,9 +56,11 @@ export default function App() {
       if (result.type === 'success') {
         // Retrieve the JWT token and decode it
         const jwtToken = result.params.id_token;
+        console.log("jwtToken: " + jwtToken)
         const decoded = jwtDecode(jwtToken);
-
+        console.log("jwtToken_decoded: " + decoded)
         const { name } = decoded;
+        console.log("name_decoded: " + name)
         setName(name);
       }
     }

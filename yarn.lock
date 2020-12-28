@@ -1753,6 +1753,11 @@ browserslist@^4.14.5, browserslist@^4.15.0:
     escalade "^3.1.1"
     node-releases "^1.1.67"
 
+bs-platform@^8.4.2:
+  version "8.4.2"
+  resolved "https://registry.yarnpkg.com/bs-platform/-/bs-platform-8.4.2.tgz#778dabd1dfb3bc95e0086c58dabae74e4ebdee8a"
+  integrity sha512-9q7S4/LLV/a68CweN382NJdCCr/lOSsJR3oQYnmPK98ChfO/AdiA3lYQkQTp6T+U0I5Z5RypUAUprNstwDtMDQ==
+
 bser@2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/bser/-/bser-2.1.1.tgz#e6787da20ece9d07998533cfd9de6f5c38f4bc05"
@@ -2487,7 +2492,7 @@ expo-sqlite@~8.5.0:
     "@expo/websql" "^1.0.1"
     lodash "^4.17.15"
 
-expo-web-browser@^8.6.0:
+expo-web-browser@^8.6.0, expo-web-browser@~8.6.0:
   version "8.6.0"
   resolved "https://registry.yarnpkg.com/expo-web-browser/-/expo-web-browser-8.6.0.tgz#121ad81b2597b8273739b630c278a6f6937b95ae"
   integrity sha512-VHFuBl0im00yEVbEzOZUrQVvq8uGhyU/4WivJkfLF4GA3Pj7CaG6PMo0+6YNzkzB1JoVx5AfuKgBbSuOuETP9Q==
@@ -2811,6 +2816,11 @@ gensync@^1.0.0-beta.1:
   version "1.0.0-beta.2"
   resolved "https://registry.yarnpkg.com/gensync/-/gensync-1.0.0-beta.2.tgz#32a6ee76c3d7f52d46b2b1ae5d93fea8580a25e0"
   integrity sha512-3hN7NaskYvMDLQY55gnW3NQ+mesEAepTqlg+VEbj7zzqEMBVNhzcGYYeqFo/TlYz6eQiFcp1HcsCZO+nGgS8zg==
+
+gentype@^3.41.0:
+  version "3.41.0"
+  resolved "https://registry.yarnpkg.com/gentype/-/gentype-3.41.0.tgz#95f17272cadc7542275cc6e377f4dfcecaa2d443"
+  integrity sha512-fpdB3QOibhpB9wPK+ZGS5d84G6w3fB/BCEvt/G81WOZspC2Prh9QN7doifkBP6o1MYIfOAR98sfyvfKyC1fatQ==
 
 get-caller-file@^2.0.1:
   version "2.0.5"
@@ -4633,6 +4643,16 @@ readable-stream@^2.0.1, readable-stream@^2.2.2, readable-stream@~2.3.6:
     safe-buffer "~5.1.1"
     string_decoder "~1.1.1"
     util-deprecate "~1.0.1"
+
+reason-react-native@^0.63.2:
+  version "0.63.2"
+  resolved "https://registry.yarnpkg.com/reason-react-native/-/reason-react-native-0.63.2.tgz#01750295995f3e896a56e713990cb594d56eb22d"
+  integrity sha512-PXQa2CDY/QZbfvCjn3q3qVoFfzKcUg3Prdw3mEyXL4BoGnRfVMXA4jVCoyXPUQCXU05MErM2TE3eTZLjRhQ+7g==
+
+reason-react@^0.9.1:
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/reason-react/-/reason-react-0.9.1.tgz#30a887158200b659aa03e2d75ff4cc54dc462bb0"
+  integrity sha512-nlH0O2TDy9KzOLOW+vlEQk4ExHOeciyzFdoLcsmmiit6hx6H5+CVDrwJ+8aiaLT/kqK5xFOjy4PS7PftWz4plA==
 
 regenerate-unicode-properties@^8.2.0:
   version "8.2.0"
