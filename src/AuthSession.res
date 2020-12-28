@@ -94,7 +94,7 @@ type authRequestPromptOptions = {
   url: option<string>,
   useProxy: option<bool>,
 }
-type useProxy = bool
+type useProxy = {"useProxy":bool}
 // type promptAsync = (useProxy)=> Js.Promise.t<AuthSessionResult.t>
 type authRequest = {
   request: authRequestConfig,
@@ -104,7 +104,7 @@ type authRequestResult = {
   url: Js.Nullable.t<string>,
   promptAsync: useProxy => Js.Promise.t<AuthSessionResult.t>,
   request: option<authRequestConfig>,
-  result: authSessionResult,
+  result: option<authSessionResult>,
 }
 // type asyncStorageState = {
 //   getItem: unit => Js.Promise.t<Js.Null.t<string>>,

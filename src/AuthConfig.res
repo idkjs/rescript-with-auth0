@@ -2,9 +2,9 @@
 
 let useProxy: AuthSession.useProxy = {
   switch Constants.platform {
-  | IOS => true
-  | Android => true
-  | Web => false
+  | IOS => {"useProxy": true}
+  | Android => {"useProxy": true}
+  | Web => {"useProxy": false}
   }
 }
 // let redirectUri:string = getRedirectUri

@@ -15,21 +15,22 @@ let styles = {
 @react.component
 let make = () => {
   let (name, setName) = React.useState(_ => None)
+  let (value, setValue) = React.useState(_ => None)
   let authorizationEndpoint = "https://klik.eu.auth0.com/authorize"
   let useProxy: AuthSession.useProxy = {
     switch Constants.platform {
-    | IOS => true
-    | Android => true
-    | Web => false
+    | IOS => {"useProxy": true}
+    | Android => {"useProxy": true}
+    | Web => {"useProxy": false}
     }
   }
   let auth0ClientId = "GDuiq4x1reJXs8a6yDXgqJcNAc8QBOjX"
 
   open AuthSession
-  let redirectUri:string = getRedirectUri
+  let redirectUri: string = getRedirectUri
 
   let authRequestConfig: authRequestConfig = {
-    redirectUri,
+    redirectUri: redirectUri,
     clientId: auth0ClientId,
     // id_token will return a JWT token
     responseType: Some(ResponseType.idToken),
@@ -45,7 +46,27 @@ let make = () => {
     request: authRequestConfig,
     authorizationEndpoint: authorizationEndpoint,
   })
-
+//   let handePromptAsync = () => {
+//     promptAsync(useProxy) |> Js.Promise.then_(result => {
+//         switch (result) {
+//         | None =>{
+//           setValue(_ => None)
+//           Js.Promise.resolve()}
+//         | Some(newValue) =>{
+//           setValue(_ => newValue)
+//            Js.Promise.resolve()
+//            }
+//         }
+//     //   Js.log(result)->ignore
+//     //   Js.Promise.resolve()
+//    } )->ignore
+//   }
+  let handePromptAsync2 = () => {
+    Js.log("handePromptAsync: ")
+    promptAsync({useProxy})
+    |> Js.Promise.then_(result => Js.log(result) |> Js.Promise.resolve)
+    |> ignore
+  }
   Js.log("Redirect URL: " ++ redirectUri)
 
   React.useEffect1(() => {
@@ -93,7 +114,7 @@ let make = () => {
       | None => false
       }}
       title="Log in with Auth0"
-      onPress={_ => promptAsync(useProxy)->ignore}
+      onPress={_e => handePromptAsync2()->ignore}
     />
   </View>
 }
