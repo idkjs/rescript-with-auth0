@@ -15,7 +15,7 @@ let styles = {
 @react.component
 let make = () => {
   let (name, setName) = React.useState(_ => None)
-  let (value, setValue) = React.useState(_ => None)
+  let (_promptAsync, setPromptTrue) = React.useState(_ => false)
   let authorizationEndpoint = "https://klik.eu.auth0.com/authorize"
   let useProxy: AuthSession.useProxy = {
     switch Constants.platform {
@@ -46,21 +46,21 @@ let make = () => {
     request: authRequestConfig,
     authorizationEndpoint: authorizationEndpoint,
   })
-//   let handePromptAsync = () => {
-//     promptAsync(useProxy) |> Js.Promise.then_(result => {
-//         switch (result) {
-//         | None =>{
-//           setValue(_ => None)
-//           Js.Promise.resolve()}
-//         | Some(newValue) =>{
-//           setValue(_ => newValue)
-//            Js.Promise.resolve()
-//            }
-//         }
-//     //   Js.log(result)->ignore
-//     //   Js.Promise.resolve()
-//    } )->ignore
-//   }
+  //   let handePromptAsync = () => {
+  //     promptAsync(useProxy) |> Js.Promise.then_(result => {
+  //         switch (result) {
+  //         | None =>{
+  //           setValue(_ => None)
+  //           Js.Promise.resolve()}
+  //         | Some(newValue) =>{
+  //           setValue(_ => newValue)
+  //            Js.Promise.resolve()
+  //            }
+  //         }
+  //     //   Js.log(result)->ignore
+  //     //   Js.Promise.resolve()
+  //    } )->ignore
+  //   }
   let handePromptAsync2 = () => {
     Js.log("handePromptAsync: ")
     promptAsync({useProxy})
@@ -72,6 +72,11 @@ let make = () => {
   React.useEffect1(() => {
     Js.log2("state_name: ", name)
     Js.log2("result: ", result)
+    Js.log2("_promptAsync: ", _promptAsync)
+    if _promptAsync {
+    //   handePromptAsync2()->ignore
+      Js.log2("_promptAsync: ", _promptAsync)
+    }
 
     // switch result {
     // | Some(result) =>
@@ -95,7 +100,7 @@ let make = () => {
     // | None => ()
     // }
     None
-  }, [result])
+  }, [_promptAsync])
 
   //   return (
   <View style={styles["container"]}>
@@ -114,7 +119,7 @@ let make = () => {
       | None => false
       }}
       title="Log in with Auth0"
-      onPress={_e => handePromptAsync2()->ignore}
+      onPress={_e => setPromptTrue(_ => true)}
     />
   </View>
 }
