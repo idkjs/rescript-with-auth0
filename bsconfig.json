@@ -17,7 +17,10 @@
   "bs-dependencies": [
     "reason-react",
     "reason-promise",
-    "reason-react-native"
+    "reason-react-native",
+    "reason-date-fns",
+    "bs-query-string",
+    "rationale"
   ],
     "gentypeconfig": {
     "language": "typescript",

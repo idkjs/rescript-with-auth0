@@ -1,14 +1,19 @@
 {
 	"dependencies": {
+		"@teclone/xhr": "^1.0.0",
+		"bs-query-string": "^0.1.1",
+		"date-fns": "^2.16.1",
 		"expo": "~40.0.0",
 		"expo-auth-session": "~3.0.0",
 		"expo-random": "~10.0.0",
 		"expo-web-browser": "~8.6.0",
 		"jwt-decode": "2.2.0",
+		"rationale": "^0.2.0",
 		"react": "16.13.1",
 		"react-dom": "16.13.1",
 		"react-native": "https://github.com/expo/react-native/archive/sdk-40.0.1.tar.gz",
 		"react-native-web": "~0.13.12",
+		"reason-date-fns": "^1.0.2",
 		"reason-promise": "^1.1.2",
 		"reason-react": "^0.9.1",
 		"reason-react-native": "^0.63.2"
