@@ -4644,6 +4644,11 @@ readable-stream@^2.0.1, readable-stream@^2.2.2, readable-stream@~2.3.6:
     string_decoder "~1.1.1"
     util-deprecate "~1.0.1"
 
+reason-promise@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/reason-promise/-/reason-promise-1.1.2.tgz#00ddb71c4034bdbdadd24f7c95273d32870f6d50"
+  integrity sha512-HmZqSjvKJgU/ARpz9cK5mHGELF/j7shY3Jgz/45kGSgK5DXcBqu5Z2q9iw6GVCNGVu5o4yT4bsj7e3sxLjo1jQ==
+
 reason-react-native@^0.63.2:
   version "0.63.2"
   resolved "https://registry.yarnpkg.com/reason-react-native/-/reason-react-native-0.63.2.tgz#01750295995f3e896a56e713990cb594d56eb22d"

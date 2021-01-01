@@ -90,22 +90,76 @@ module AuthSessionResult = {
   //   let authSessionResult = (v: t) => t
 }
 type authSessionResult = AuthSessionResult.t
-type authRequestPromptOptions = {
-  url: option<string>,
-  useProxy: option<bool>,
-}
-type useProxy = {"useProxy":bool}
+// type authRequestPromptOptions = {
+//   url: option<string>,
+//   useProxy: option<bool>,
+// }
+type useProxy = {"useProxy": bool}
 // type promptAsync = (useProxy)=> Js.Promise.t<AuthSessionResult.t>
 type authRequest = {
   request: authRequestConfig,
   authorizationEndpoint: authorizationEndpoint,
 }
-type authRequestResult = {
-  url: Js.Nullable.t<string>,
-  promptAsync: useProxy => Js.Promise.t<AuthSessionResult.t>,
-  request: option<authRequestConfig>,
-  result: option<authSessionResult>,
-}
+@bs.obj
+external authRequestConfig: (
+  ~clientId: string=?,
+  ~redirectUri: string=?,
+  ~scopes: array<string>=?,
+  ~clientSecret: string=?,
+  ~codeChallengeMethod: CodeChallengeMethod.t=?,
+  ~codeChallenge: string=?,
+  ~prompt: Prompt.t=?,
+  ~state: string=?,
+  ~extraParams: ExtraParams.t=?,
+  ~usePKCE: bool=?,
+  unit,
+) => AuthRequestConfig.t = ""
+type promptAsyncT = (. ~request: option<authRequestConfig>=?) => Js.Promise.t<AuthSessionResult.t>
+@bs.obj
+external promptAsync: (~authRequestConfig: authRequestConfig=?, unit) => promptAsyncT = ""
+type promptOptions
+@bs.obj
+external promptOptions: (
+  ~url: string=?,
+  ~useProxy: bool=?,
+  unit,
+) => promptOptions = ""
+type requestOptions
+@bs.obj
+external requestOptions: (~authRequestConfig: authRequestConfig=?, unit) => requestOptions = ""
+type promptAsyncOptions
+@bs.obj
+external promptAsyncOptions: (~options: promptOptions=?, unit) => promptAsyncOptions = ""
+
+type promptAsync = (. ~options: promptAsyncOptions=?,unit) => Js.Promise.t<AuthSessionResult.t>
+type request = option<authRequestConfig>
+type result = option<authSessionResult>
+// type authRequestResult = {
+//   url: Js.Nullable.t<string>,
+//   //   promptAsync : ( ~options: promptAsyncOptions=?, unit) => unit=> Js.Promise.t<AuthSessionResult.t>,
+//   request: option<authRequestConfig>,
+//   result: option<authSessionResult>,
+//   promptAsync: (. unit) => Js.Promise.t<AuthSessionResult.t>,
+// }
+type getError = Js.Promise.error
+// Promise.Js.t<placeResult, getDetailsError>
+type authRequestTuple = (
+  option<authRequestConfig>,
+  option<authSessionResult>,
+  (. ~options: promptAsyncOptions=?,unit) => Js.Promise.t<AuthSessionResult.t>,
+//   (. ~options: promptAsyncOptions=?,unit) => Promise.Js.t<AuthSessionResult.t,getError>,
+)
+//   url: Js.Nullable.t<string>,
+//   promptAsync : ( . unit) =>  unit,
+// //   promptAsync : ( ~options: promptAsyncOptions=?, unit) => unit=> Js.Promise.t<AuthSessionResult.t>,
+//   request: option<authRequestConfig>,
+//   result: option<authSessionResult>,
+// }
+// type auth0<'a> = {
+//   auth: auth<'a>,
+//   webAuth: webAuth,
+//   users: (~token: string) => users<'a>,
+// }
 // type asyncStorageState = {
 //   getItem: unit => Js.Promise.t<Js.Null.t<string>>,
 //   setItem: string => Js.Promise.t<unit>,
@@ -116,14 +170,18 @@ type authRequestResult = {
 // @bs.module("@react-native-async-storage/async-storage")
 // external useAsyncStorage: string => asyncStorageState = "useAsyncStorage"
 type t
-@bs.module external authSession: t = "expo-auth-session"
-@bs.send external _makeRedirectUri: (t, useProxy)=>unit => string = "makeRedirectUri"
-
-let authSession = authSession
-let makeRedirectUri = useProxy => _makeRedirectUri(authSession, useProxy)
-let getRedirectUri =%raw(`getRedirectUrl()`)
-
+// @bs.module @bs.new external authSession: t = "expo-auth-session"
+@bs.send external _makeRedirectUri: (t, useProxy, unit) => string = "makeRedirectUri"
+// @bs.set external promptAsync: (t, @bs.this ((t, unit) => Js.Promise.t<authSessionResult>)) => unit = "useAuthRequest"
+// @bs.get external resp: t => authSessionResult = "useAuthRequest"
+// promptAsync(authSession, @bs.this (resp => resp|>Js.Promise.resolve))
+// let authSession = authSession
+// let makeRedirectUri = useProxy => _makeRedirectUri(authSession, useProxy)
+let getRedirectUri = %raw(`getRedirectUrl()`)
+type useAuthRequestResult<'a> = ('a, 'a, 'a)
 // @bs.module("expo-auth-session")
 // external makeRedirectUri: useProxy => string = "makeRedirectUri"
 @bs.module("expo-auth-session")
-external useAuthRequest: authRequest => authRequestResult = "useAuthRequest"
+external useAuthRequest: authRequest => authRequestTuple = "useAuthRequest"
+// @bs.module("expo-auth-session")
+// external useAuthRequestRaw: authRequest => useAuthRequestResult<'a> = "useAuthRequest"
