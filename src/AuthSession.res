@@ -169,7 +169,7 @@ type options = {
 @bs.deriving(abstract)
 type result<'paramType, 'eventType> = {
   @bs.as("type")
-  _type: [#error | #success],
+  _type: [#error | #success ],
   @bs.optional
   params: 'paramType,
   @bs.optional
@@ -178,16 +178,16 @@ type result<'paramType, 'eventType> = {
   errorCode: string,
 }
 
-// @bs.module("expo") @bs.scope("AuthSession")
+
 @bs.module("expo-auth-session")
 external startAsync: options => Js.Promise.t<result<'paramType, 'eventType>> = "startAsync"
 @bs.module("expo-auth-session")
 external useAuthRequest: options => Js.Promise.t<result<'paramType, 'eventType>> = "useAuthRequest"
 
 @bs.module("expo-auth-session")
-external // @bs.module("expo") @bs.scope("AuthSession")
+external
 dismiss: unit => unit = "dismiss"
 
 @bs.module("expo-auth-session")
-external // @bs.module("expo") @bs.scope("AuthSession")
+external
 getRedirectUrl: unit => string = "getRedirectUrl"

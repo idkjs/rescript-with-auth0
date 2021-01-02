@@ -128,20 +128,20 @@ let make = () => {
   //     Some(() => Hooks.AppState.removeEventListener("load", handler))
   //   }, [auth0FromHook])
 
-  React.useEffect1(() => {
-    // let auth0FromHook = Auth0SpaClient.createAuth0Client(options);
-    // // Js.Promise.resolve();
-    // setAuth0(_ => Some(auth0FromHook));
-    // Js.Promise.resolve();
-    switch auth0Client {
-    | Some(auth0Client) =>
-      // let checkAuthenticated = auth0Client.isAuthenticated();
-      Js.log2("auth0Client:", auth0Client) |> ignore
-      setIsAuthenticated(_ => false)
-    | None => ()
-    }
-    None
-  }, [auth0Client])
+//   React.useEffect1(() => {
+//     // let auth0FromHook = Auth0SpaClient.createAuth0Client(options);
+//     // // Js.Promise.resolve();
+//     // setAuth0(_ => Some(auth0FromHook));
+//     // Js.Promise.resolve();
+//     switch auth0Client {
+//     | Some(auth0Client) =>
+//       // let checkAuthenticated = auth0Client.isAuthenticated();
+//       Js.log2("auth0Client:", auth0Client) |> ignore
+//       setIsAuthenticated(_ => false)
+//     | None => ()
+//     }
+//     None
+//   }, [auth0Client])
   //   React.useEffect0(() => {
   //     let request = makeXMLHttpRequest()
   //     // request->addEventListener("load", () =>

@@ -1,4 +1,5 @@
 open ReactNative
+
 let styles = {
   open Style
   StyleSheet.create({
@@ -47,40 +48,7 @@ let auth0Domain = "https://klik.eu.auth0.com/authorize"
 //   //   open AuthSession
 let redirectUri: string = AuthSession.getRedirectUrl()
 // type queryParams
-type queryParams = {
-  @bs.as("responseType")
-  responseType: option<AuthSession.responseType>,
-  clientId: string,
-  redirectUri: string,
-  scopes: option<array<AuthSession.scopes>>,
-  //   clientSecret: option<string>,
-  //   codeChallengeMethod: option<CodeChallengeMethod.t>,
-  //   codeChallenge: Js.Nullable.t<string>,
-  //   prompt: option<Prompt.t>,
-  //   state: option<string>,
-  nonce: string,
-  //   usePKCE: option<bool>,
-}
 
-let stringifyParams = (search: queryParams) => {
-  open BsQueryString.Stringify
-  toQs([
-    ("responseType", optional(search.responseType, string)),
-    ("client_id", item(search.clientId, string)),
-    ("redirect_uri", item(search.redirectUri, string)),
-    ("scopes", optional(search.scopes, array)),
-    ("nonce", item(search.nonce, string)),
-  ])
-}
-@bs.obj
-external queryParams: (
-  ~clientId: string=?,
-  ~redirectUri: string=?,
-  ~responseType: string=?,
-  ~scope: string=?,
-  ~nonce: string=?,
-  unit,
-) => queryParams = ""
 // type state = {name:string}
 
 @react.component
@@ -111,9 +79,10 @@ let make = () => {
     //   })
     }
   }
+  Js.log(`Redirect URL: ${Auth0.config}`)
   let login: unit => Js.Promise.t<unit> = () => {
-    let redirectUrl = AuthSession.getRedirectUrl()
-    Js.log(`Redirect URL: ${redirectUrl}`)
+    // let redirectUrl = AuthSession.getRedirectUrl()
+    Js.log(`Redirect URL: ${Auth0.config}`)
 
     // let queryParams = {
     //   "clientId": auth0ClientId,
@@ -123,21 +92,9 @@ let make = () => {
     //   "scope": Some([AuthSession.Scopes.openId, AuthSession.Scopes.profile]),
     //   "nonce": "nonce",
     // }
-    let queryParams = queryParams(
-      ~clientId=auth0ClientId,
-      ~redirectUri=redirectUrl,
-      ~responseType=AuthSession.ResponseType.idToken,
-      // retrieve the user's profile
-      ~scope="openid profile",
-      ~nonce="nonce",
-      (),
-    )
-    let authUrl = auth0Domain ++ "/" ++ "authorize" ++ queryParams->stringifyParams
-    Js.log2("authUrl", authUrl)
-    Js.log2("queryParams->stringifyParams", queryParams->stringifyParams)
-    let authorizationEndpoint = "https://klik.eu.auth0.com/authorize"
+
     let authenticationOptions = AuthSession.options(
-      ~authUrl=authorizationEndpoint,
+      ~authUrl=Auth0.url,
       ~returnUrl=AuthSession.getRedirectUrl(),
       (),
     )
