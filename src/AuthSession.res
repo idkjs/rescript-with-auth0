@@ -12,23 +12,61 @@
 // // IdToken = "id_token"
 // %%raw(`import { getRedirectUrl } from 'expo-auth-session';`)
 
+// module ResponseType = {
+//   type t = string
+//   @bs.inline
+//   let code = "code"
+//   @bs.inline
+//   let token = "token"
+//   @bs.inline
+//   let idToken = "id_token"
+// }
+type responseType = string
 module ResponseType = {
-  type t = string
-  @bs.inline
-  let code = "code"
-  @bs.inline
-  let token = "token"
-  @bs.inline
-  let idToken = "id_token"
-}
-module Scopes = {
-  type t = string
-  @bs.inline
-  let openId = "openid"
-  @bs.inline
-  let profile = "profile"
-}
+  @bs.module("expo-auth-session") @bs.scope("ResponseType")
+  external code: responseType = "code"
 
+  @bs.module("expo-auth-session") @bs.scope("ResponseType")
+  external token: responseType = "token"
+
+  @bs.module("expo-auth-session") @bs.scope("ResponseType")
+  external idToken: responseType = "id_token"
+}
+// module Scopes = {
+//   type t = string
+//   @bs.inline
+//   let openId = "openid"
+//   @bs.inline
+//   let profile = "profile"
+// }
+type scopes = string
+module Scopes = {
+  @bs.module("expo-auth-session") @bs.scope("Scopes")
+  external openId: responseType = "openid"
+
+  @bs.module("expo-auth-session") @bs.scope("Scopes")
+  external profile: responseType = "profile"
+}
+type responseTypeVariant =
+  | Code
+  | Token
+  | IdToken
+  | Unknown
+  | Invalid
+
+type error = {code: option<responseType>}
+external castError: Js.Promise.error => error = "%identity"
+
+let convertError = x =>
+  switch x {
+  | {code: Some(code)} when code == ResponseType.code => Code
+  | {code: Some(code)} when code == ResponseType.token => Token
+  | {code: Some(code)} when code == ResponseType.idToken => IdToken
+  | {code: Some(_)} => Unknown
+  | _e => Invalid
+  }
+
+let convertError = (error: Js.Promise.error) => error |> castError |> convertError
 type extraParams = {
   // ideally, this will be a random value
   nonce: string,
@@ -37,10 +75,10 @@ type extraParams = {
 // type authorizationEndpoint = string
 // type scopes = [#openid | #profile]
 type authRequestConfig = {
-  responseType: option<ResponseType.t>,
+  responseType: option<string>,
   clientId: string,
   redirectUri: string,
-  scopes: option<array<Scopes.t>>,
+  scopes: option<array<string>>,
   //   clientSecret: option<string>,
   //   codeChallengeMethod: option<CodeChallengeMethod.t>,
   //   codeChallenge: Js.Nullable.t<string>,
@@ -119,72 +157,8 @@ type authRequestConfig = {
 // external promptAsync: (~authRequestConfig: authRequestConfig=?, unit) => promptAsyncT = ""
 type promptOptions
 @bs.obj
-external promptOptions: (
-  ~url: string=?,
-  ~useProxy: bool=?,
-  unit,
-) => promptOptions = ""
-// type requestOptions
-// @bs.obj
-// external requestOptions: (~authRequestConfig: authRequestConfig=?, unit) => requestOptions = ""
-// type promptAsyncOptions
-// @bs.obj
-// external promptAsyncOptions: (~options: promptOptions=?, unit) => promptAsyncOptions = ""
+external promptOptions: (~url: string=?, ~useProxy: bool=?, unit) => promptOptions = ""
 
-// type promptAsync = (. ~options: promptAsyncOptions=?,unit) => Js.Promise.t<AuthSessionResult.t>
-// type request = option<authRequestConfig>
-// type result = option<authSessionResult>
-// // type authRequestResult = {
-// //   url: Js.Nullable.t<string>,
-// //   //   promptAsync : ( ~options: promptAsyncOptions=?, unit) => unit=> Js.Promise.t<AuthSessionResult.t>,
-// //   request: option<authRequestConfig>,
-// //   result: option<authSessionResult>,
-// //   promptAsync: (. unit) => Js.Promise.t<AuthSessionResult.t>,
-// // }
-// type getError = Js.Promise.error
-// // Promise.Js.t<placeResult, getDetailsError>
-// type authRequestTuple = (
-//   option<authRequestConfig>,
-//   option<authSessionResult>,
-//   (. ~options: promptAsyncOptions=?,unit) => Js.Promise.t<AuthSessionResult.t>,
-// //   (. ~options: promptAsyncOptions=?,unit) => Promise.Js.t<AuthSessionResult.t,getError>,
-// )
-// //   url: Js.Nullable.t<string>,
-// //   promptAsync : ( . unit) =>  unit,
-// // //   promptAsync : ( ~options: promptAsyncOptions=?, unit) => unit=> Js.Promise.t<AuthSessionResult.t>,
-// //   request: option<authRequestConfig>,
-// //   result: option<authSessionResult>,
-// // }
-// // type auth0<'a> = {
-// //   auth: auth<'a>,
-// //   webAuth: webAuth,
-// //   users: (~token: string) => users<'a>,
-// // }
-// // type asyncStorageState = {
-// //   getItem: unit => Js.Promise.t<Js.Null.t<string>>,
-// //   setItem: string => Js.Promise.t<unit>,
-// //   mergeItem: string => Js.Promise.t<unit>,
-// //   removeItem: unit => Js.Promise.t<unit>,
-// // }
-
-// // @bs.module("@react-native-async-storage/async-storage")
-// // external useAsyncStorage: string => asyncStorageState = "useAsyncStorage"
-// type t
-// // @bs.module @bs.new external authSession: t = "expo-auth-session"
-// @bs.send external _makeRedirectUri: (t, useProxy, unit) => string = "makeRedirectUri"
-// // @bs.set external promptAsync: (t, @bs.this ((t, unit) => Js.Promise.t<authSessionResult>)) => unit = "useAuthRequest"
-// // @bs.get external resp: t => authSessionResult = "useAuthRequest"
-// // promptAsync(authSession, @bs.this (resp => resp|>Js.Promise.resolve))
-// // let authSession = authSession
-// // let makeRedirectUri = useProxy => _makeRedirectUri(authSession, useProxy)
-// let getRedirectUri = %raw(`getRedirectUrl()`)
-// type useAuthRequestResult<'a> = ('a, 'a, 'a)
-// // @bs.module("expo-auth-session")
-// // external makeRedirectUri: useProxy => string = "makeRedirectUri"
-// @bs.module("expo-auth-session")
-// external useAuthRequest: authRequest => authRequestTuple = "useAuthRequest"
-// @bs.module("expo-auth-session")
-// external useAuthRequestRaw: authRequest => useAuthRequestResult<'a> = "useAuthRequest"
 @bs.deriving(abstract)
 type options = {
   authUrl: string,
@@ -206,16 +180,14 @@ type result<'paramType, 'eventType> = {
 
 // @bs.module("expo") @bs.scope("AuthSession")
 @bs.module("expo-auth-session")
-external startAsync: options => Js.Promise.t<result<'paramType, 'eventType>> =
-  "startAsync"
+external startAsync: options => Js.Promise.t<result<'paramType, 'eventType>> = "startAsync"
 @bs.module("expo-auth-session")
-external useAuthRequest: options => Js.Promise.t<result<'paramType, 'eventType>> =
-  "useAuthRequest"
+external useAuthRequest: options => Js.Promise.t<result<'paramType, 'eventType>> = "useAuthRequest"
 
 @bs.module("expo-auth-session")
-// @bs.module("expo") @bs.scope("AuthSession")
-external dismiss: unit => unit = "dismiss"
+external // @bs.module("expo") @bs.scope("AuthSession")
+dismiss: unit => unit = "dismiss"
 
 @bs.module("expo-auth-session")
-// @bs.module("expo") @bs.scope("AuthSession")
-external getRedirectUrl: unit => string = "getRedirectUrl"
+external // @bs.module("expo") @bs.scope("AuthSession")
+getRedirectUrl: unit => string = "getRedirectUrl"

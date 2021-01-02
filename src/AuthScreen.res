@@ -48,11 +48,11 @@ let auth0Domain = "https://klik.eu.auth0.com/authorize"
 let redirectUri: string = AuthSession.getRedirectUrl()
 // type queryParams
 type queryParams = {
-  @bs.as("response_type")
-  responseType: option<AuthSession.ResponseType.t>,
+  @bs.as("responseType")
+  responseType: option<AuthSession.responseType>,
   clientId: string,
   redirectUri: string,
-  scopes: option<array<AuthSession.Scopes.t>>,
+  scopes: option<array<AuthSession.scopes>>,
   //   clientSecret: option<string>,
   //   codeChallengeMethod: option<CodeChallengeMethod.t>,
   //   codeChallenge: Js.Nullable.t<string>,
@@ -66,36 +66,37 @@ let stringifyParams = (search: queryParams) => {
   open BsQueryString.Stringify
   toQs([
     ("responseType", optional(search.responseType, string)),
-    ("clientId", item(search.clientId, string)),
-    ("redirectUri", item(search.redirectUri, string)),
+    ("client_id", item(search.clientId, string)),
+    ("redirect_uri", item(search.redirectUri, string)),
     ("scopes", optional(search.scopes, array)),
     ("nonce", item(search.nonce, string)),
   ])
 }
 @bs.obj
 external queryParams: (
-  ~client_id: string=?,
-  ~redirect_uri: string=?,
-  ~response_type: string=?,
+  ~clientId: string=?,
+  ~redirectUri: string=?,
+  ~responseType: string=?,
   ~scope: string=?,
   ~nonce: string=?,
   unit,
 ) => queryParams = ""
 // type state = {name:string}
+
 @react.component
 let make = () => {
   let (name, setState) = React.useState(() => None)
   let handleResponse: response => Js.Promise.t<unit> = response => {
     switch response._type {
-    | #error =>{
-      Alert.alert(
-        ~title="Authentication error",
-        ~message=response.error_description->Belt.Option.getWithDefault("something went wrong"),
-        (),
-
-      )
-      Js.Promise.resolve()}
-   | #success =>
+    | #error => {
+        Alert.alert(
+          ~title="Authentication error",
+          ~message=response.error_description->Belt.Option.getWithDefault("something went wrong"),
+          (),
+        )
+        Js.Promise.resolve()
+      }
+    | #success =>
       let jwtToken = response.id_token |> Auth0Tokens.make
       Js.log2("Authentication response", jwtToken)
       let name = jwtToken
@@ -115,34 +116,53 @@ let make = () => {
     Js.log(`Redirect URL: ${redirectUrl}`)
 
     // let queryParams = {
-    //   "client_id": auth0ClientId,
-    //   "redirect_uri": redirectUrl,
-    //   "response_type": Some(AuthSession.ResponseType.idToken),
+    //   "clientId": auth0ClientId,
+    //   "redirectUri": redirectUrl,
+    //   "responseType": Some(AuthSession.ResponseType.idToken),
     //   // retrieve the user's profile
     //   "scope": Some([AuthSession.Scopes.openId, AuthSession.Scopes.profile]),
     //   "nonce": "nonce",
     // }
     let queryParams = queryParams(
-      ~client_id=auth0ClientId,
-      ~redirect_uri=redirectUrl,
-      ~response_type=AuthSession.ResponseType.idToken,
+      ~clientId=auth0ClientId,
+      ~redirectUri=redirectUrl,
+      ~responseType=AuthSession.ResponseType.idToken,
       // retrieve the user's profile
       ~scope="openid profile",
       ~nonce="nonce",
       (),
     )
     let authUrl = auth0Domain ++ "/" ++ "authorize" ++ queryParams->stringifyParams
-
-    AuthSession.startAsync(AuthSession.options(~authUrl, ())) |> Js.Promise.then_(response => {
-      Js.log2("Authentication response", response)
-      handleResponse(response)|>ignore
-     Js.Promise.resolve()
-      //   response |> handleResponse(response)|>Js.Promise.resolve
-      //   Js.Promise.resolve|>ignore
-      //   response |> handleResponse |> ignore;
-      //   Js.Promise.resolve(response |> handleResponse)->ignore
+    Js.log2("authUrl", authUrl)
+    Js.log2("queryParams->stringifyParams", queryParams->stringifyParams)
+    let authorizationEndpoint = "https://klik.eu.auth0.com/authorize"
+    let authenticationOptions = AuthSession.options(
+      ~authUrl=authorizationEndpoint,
+      ~returnUrl=AuthSession.getRedirectUrl(),
+      (),
+    )
+    AuthSession.startAsync(authenticationOptions)->FFPromise.then_(response => {
+      Js.log2("Authentication response", response)->ignore
+      //    handleResponse(response)->ignore
+      FFPromise.resolve()
     })
+    // AuthSession.startAsync(AuthSession.options(~authUrl, ())) -> FFPromise.then_(response => {
+    //     Js.log2("Authentication response", response)->ignore
+    // //    handleResponse(response)->ignore
+    //     FFPromise.resolve()
+    // })
+    // AuthSession.startAsync(AuthSession.options(~authUrl, ())) |> FFPromise.then_(response => {
+    //   Js.log2("Authentication response", response)
+    // //   handleResponse(response)|>FFPromise.resolve()
+    // //  Js.Promise.resolve()
+    //   //   response |> handleResponse(response)|>Js.Promise.resolve
+    //   //   Js.Promise.resolve|>ignore
+    //   //   response |> handleResponse |> ignore;
+    //   //   Js.Promise.resolve(response |> handleResponse)->ignore
+    // FFPromise.resolve()
+    //   }) |> ignore
   }
+
   <View style={styles["container"]}>
     {switch name {
     | Some(name) =>
@@ -154,3 +174,5 @@ let make = () => {
     }}
   </View>
 }
+
+let default = make

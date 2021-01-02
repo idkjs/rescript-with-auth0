@@ -1,6 +1,7 @@
 
-import App from './src/App.bs'
-// import App from './src/Dog.bs'
+// import App from './src/App.bs'
+// import {default as App} from './src/Dog.bs'
+import {default as App} from './src/AuthScreen.bs'
 export default App
 // import * as AuthSession from 'expo-auth-session';
 // import jwtDecode from 'jwt-decode';

@@ -1,4 +1,3 @@
-
 let auth0ClientId = "GDuiq4x1reJXs8a6yDXgqJcNAc8QBOjX"
 
 //   //   open AuthSession
@@ -84,7 +83,7 @@ type authenticationState =
   | Success
   | NotAuthorized
   | NotAvailable
-  | InBackground(Js.Date.t);
+  | InBackground(Js.Date.t)
 
 @react.component
 let make = () => {
@@ -96,38 +95,38 @@ let make = () => {
   let (popupOpen, setPopupOpen) = React.useState(_ => false)
   let (idToken, setIdToken) = React.useState(_ => "")
   let authorizationEndpoint = "https://klik.eu.auth0.com/authorize"
-    let appState = Hooks.useAppState();
+  let appState = Hooks.useAppState()
   let authenticationOptions = AuthSession.options(
     ~authUrl=authorizationEndpoint,
     ~returnUrl=AuthSession.getRedirectUrl(),
     (),
   )
-    let (authState, setAuthenticated) = React.useState(() => NotAuthorized);
+  let (authState, setAuthenticated) = React.useState(() => NotAuthorized)
 
-//   let authenticate = _ => {
-//       open Js
-//     AuthSession.startAsync(authenticationOptions)
-//     |> Promise.then_(authResult =>
-//          setAuthenticated(_ =>
-//            AuthSession.paramsGet(authResult)
-//              ? Success : NotAuthorized
-//          )
-//          |> Promise.resolve
-//        )
-//     |> Promise.catch(_ =>
-//          setAuthenticated(_ => NotAvailable) |> Promise.resolve
-//        )
-//     |> ignore;
-//   };
+  //   let authenticate = _ => {
+  //       open Js
+  //     AuthSession.startAsync(authenticationOptions)
+  //     |> Promise.then_(authResult =>
+  //          setAuthenticated(_ =>
+  //            AuthSession.paramsGet(authResult)
+  //              ? Success : NotAuthorized
+  //          )
+  //          |> Promise.resolve
+  //        )
+  //     |> Promise.catch(_ =>
+  //          setAuthenticated(_ => NotAvailable) |> Promise.resolve
+  //        )
+  //     |> ignore;
+  //   };
   let auth0Client = AuthSession.startAsync(authenticationOptions)
   // Notice that instead of `useEffect`, we have `useEffect0`. See
   // reasonml.github.io/reason-react/docs/en/components#hooks for more info
-//   React.useEffect1(() => {
-//     let handler = () => setAuth0(_ => Some(auth0FromHook))
-//     Hooks.AppState.addEventListener(#change, handler)
-//     setAuth0(_ => Some(auth0FromHook))
-//     Some(() => Hooks.AppState.removeEventListener("load", handler))
-//   }, [auth0FromHook])
+  //   React.useEffect1(() => {
+  //     let handler = () => setAuth0(_ => Some(auth0FromHook))
+  //     Hooks.AppState.addEventListener(#change, handler)
+  //     setAuth0(_ => Some(auth0FromHook))
+  //     Some(() => Hooks.AppState.removeEventListener("load", handler))
+  //   }, [auth0FromHook])
 
   React.useEffect1(() => {
     // let auth0FromHook = Auth0SpaClient.createAuth0Client(options);

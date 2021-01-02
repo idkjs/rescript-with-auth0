@@ -4683,6 +4683,11 @@ reason-date-fns@^1.0.2:
   resolved "https://registry.yarnpkg.com/reason-date-fns/-/reason-date-fns-1.0.2.tgz#e50e2f91afda3b554ba0daf2d404c856420e362f"
   integrity sha512-GNImHrZrRoyXnhDB8/SxT0jIvvv67xdPhY7qb8ai4Ka8FGbmQjt7eilpbCg8No0D4icYTiwvaT7XckWgJqrVxQ==
 
+reason-future@^2.6.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/reason-future/-/reason-future-2.6.0.tgz#089a6ec59386d3f3eb3cebdc63515ac9499ee715"
+  integrity sha512-wrXTAIGQed+Simhqc9X5PEjvBPhmPmxYImawNrDFGEt9woF/NY04Ny2BpiQk18e72QZMnOLdfPqCOdeT5egTAg==
+
 reason-promise@^1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/reason-promise/-/reason-promise-1.1.2.tgz#00ddb71c4034bdbdadd24f7c95273d32870f6d50"
