@@ -1,5 +1,5 @@
 open ReactNative
-
+// https://github.com/neoppat/testapp/blob/master/src/screens/AuthScreen.tsx
 let styles = {
   open Style
   StyleSheet.create({
